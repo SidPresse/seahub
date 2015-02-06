@@ -19,19 +19,19 @@
         {% endif %}
         {% endfor %}
         <li class="tab {% block cur_messages %}{% endblock %}"><a href="{% url 'message_list' %}" class="msgs">{% trans "Messages" %}</a></li>
-        <li class="tab {% block cur_devices %}{% endblock %}"><a href="{% url 'devices' %}" class="clients">{% trans "Devices" %}</a></li>
-        <li class="tab {% block cur_contacts %}{% endblock %}"><a href="{% url 'contacts' %}" class="contacts">{% trans "Contacts" %}</a></li>
-    </ul>
 
-    <h3 class="hd">{% trans "Share Admin" %}</h3>
-    <ul class="side-tabnav-tabs">
-        {% if user.permissions.can_add_repo %}
-        <li class="tab {% block cur_share_libs %}{% endblock %}"><a href="{% url 'share_admin' %}" class="lib">{% trans "Libraries" %}</a></li>
-        <li class="tab {% block cur_share_folders %}{% endblock %}"><a href="{% url 'list_priv_shared_folders' %}" class="folders">{% trans "Folders" %}</a></li>
-        {% endif %}
-        <li class="tab {% block cur_share_files %}{% endblock %}"><a href="{% url 'list_priv_shared_files' %}" class="files">{% trans "Files" %}</a></li>
-        <li class="tab {% block cur_share_links %}{% endblock %}"><a href="{% url 'list_shared_links' %}" class="links">{% trans "Links" %}</a></li>
     </ul>
+    {% if request.user.is_staff %}
+        <h3 class="hd">{% trans "Share Admin" %}</h3>
+        <ul class="side-tabnav-tabs">
+            {% if user.permissions.can_add_repo %}
+            <li class="tab {% block cur_share_libs %}{% endblock %}"><a href="{% url 'share_admin' %}" class="lib">{% trans "Libraries" %}</a></li>
+            <li class="tab {% block cur_share_folders %}{% endblock %}"><a href="{% url 'list_priv_shared_folders' %}" class="folders">{% trans "Folders" %}</a></li>
+            {% endif %}
+            <li class="tab {% block cur_share_files %}{% endblock %}"><a href="{% url 'list_priv_shared_files' %}" class="files">{% trans "Files" %}</a></li>
+            <li class="tab {% block cur_share_links %}{% endblock %}"><a href="{% url 'list_shared_links' %}" class="links">{% trans "Links" %}</a></li>
+        </ul>
+     {% endif %}
 </div>
 {% endblock %}
 
