@@ -153,7 +153,7 @@ def gen_path_link(path, repo_name):
 
 def get_file_download_link(repo_id, obj_id, path):
     """Generate file download link.
-    
+
     Arguments:
     - `repo_id`:
     - `obj_id`:
@@ -1055,6 +1055,15 @@ def myhome(request):
 
     repo_create_url = reverse("repo_create")
 
+
+    #Rediriger l'utilisateur non staff sur son propre repo du groupe
+    if not request.user.is_staff:
+        from seahub.utils import get_user_repos
+        owned_repos, shared_repos, groups_repos, public_repos = get_user_repos(username)
+        for repo in groups_repos:
+            redirect_to='/repo/' + repo.props.id
+        return HttpResponseRedirect(redirect_to)
+
     return render_to_response('myhome.html', {
             "owned_repos": owned_repos,
             "create_shared_repo": False,
@@ -1362,7 +1371,7 @@ def repo_revert_file (request, repo_id):
     # perm check
     if check_repo_access_permission(repo.id, request.user) is None:
         raise Http404
-    
+
     commit_id = request.GET.get('commit')
     path      = request.GET.get('p')
     from_page = request.GET.get('from')
@@ -1406,7 +1415,7 @@ def repo_revert_dir (request, repo_id):
     # perm check
     if check_repo_access_permission(repo.id, request.user) is None:
         raise Http404
-    
+
     commit_id = request.GET.get('commit')
     path      = request.GET.get('p')
     from_page = request.GET.get('from')
