@@ -21,9 +21,11 @@
                         <img src="{{MEDIA_URL}}img/download.png" alt="" />
                     </a>
                     {% if not repo.encrypted %}
-                    <a class="op dir-share" href="#" data-link="{{ dirent.sharelink }}" data-token="{{ dirent.sharetoken }}" data-upload-link="{{ dirent.uploadlink }}" data-upload-token="{{ dirent.uploadtoken }}" title="{% trans "Share" %}">
-                        <img src="{{MEDIA_URL}}img/share_20.png" alt="" />
-                    </a>
+                    {% if request.user.is_staff%}
+                        <a class="op dir-share" href="#" data-link="{{ dirent.sharelink }}" data-token="{{ dirent.sharetoken }}" data-upload-link="{{ dirent.uploadlink }}" data-upload-token="{{ dirent.uploadtoken }}" title="{% trans "Share" %}">
+                            <img src="{{MEDIA_URL}}img/share_20.png" alt="" />
+                        </a>
+                    {% endif %}
                     {% endif %}
                 </div>
                 {% if user_perm == 'rw' %}
@@ -79,9 +81,11 @@
                         <img src="{{MEDIA_URL}}img/download.png" alt="" />
                     </a>
                     {% if not repo.encrypted %}
+                    {% if request.user.is_staff%}
                     <a class="op file-share" href="#" data-link="{{ dirent.sharelink }}" data-token="{{ dirent.sharetoken }}" title="{% trans "Share" %}">
                         <img src="{{MEDIA_URL}}img/share_20.png" alt="" />
                     </a>
+                    {% endif %}
                     {% endif %}
                 </div>
                 {% if user_perm == 'rw' %}
