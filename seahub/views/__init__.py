@@ -1056,14 +1056,6 @@ def myhome(request):
     repo_create_url = reverse("repo_create")
 
 
-    #Rediriger l'utilisateur non staff sur son propre repo du groupe
-    if not request.user.is_staff:
-        from seahub.utils import get_user_repos
-        owned_repos, shared_repos, groups_repos, public_repos = get_user_repos(username)
-        for repo in groups_repos:
-            redirect_to='/repo/' + repo.props.id
-        return HttpResponseRedirect(redirect_to)
-
     return render_to_response('myhome.html', {
             "owned_repos": owned_repos,
             "create_shared_repo": False,
