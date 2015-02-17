@@ -5,11 +5,13 @@
         <ul class="tab-popup-tabs-nav">
             <li class="tab"><a href="#enter" class="a">{% trans 'Enter' %}</a></li>
             <li class="tab"><a href="#contact-options" class="a">{% trans 'Contacts' %}</a></li>
+            <li class="tab"><a href="#add-user-form" class="a">{% trans 'New member' %}</a></li>
         </ul>
         <div id="enter">
             <textarea id="added-member-name" name="user_name" placeholder="{% trans "emails, separated by ','" %}"></textarea><br />
             {% if cloud_mode and not org %}
             <p class="tip">{% trans "Tip: an invitation will be sent if the email is not registered."%}</p>
+            <li class="tab"><a href="#contact-optionss" class="a">{% trans 'Create' %}</a></li>
             {% else %}
             <p class="tip">{% trans "Tip: the emails should be already registered."%}</p>
             {% endif %}
@@ -26,6 +28,32 @@
             {% endfor %}
         </ul>
         </div>
+
+        <div id="add-user-form" class="hide">
+            <h3>{% trans "Add user" %}</h3>
+            <label for="id_email">{% trans "Email" %}</label><br />
+            <input type="text" name="email_nm" id="id_email_nm" class="input" /><br />
+            {% if enable_guest %}
+            <label>{% trans "Role"%}</label><span class="icon-question-sign" title="{% trans "You can also add a user as a guest, who will not be allowed to create libraries and groups." %}" style="color:#666; margin-left:3px;"></span>
+            <select name="role" class="w100">
+                <option value={{default_user}} selected="selected">{% trans "Default"%}</option>
+                <option value={{guest_user}}>{% trans "Guest"%}</option>
+            </select><br />
+            {% endif %}
+            <label for="id_password1">{% trans "Password" %}</label><br />
+            <input type="password" name="password1" id="id_password1" class="input" /><br />
+            <label for="id_password2">{% trans "Confirm Password" %}</label><br />
+            <input type="password" name="password2" id="id_password2" class="input" /><br />
+            <!--Profile-->
+            <label>{% trans "Name" %}</label><br />
+            <input id="id_name" type="text" name="name" maxlength="255" /><br />
+            <label>{% trans "Company name" %}</label><br />
+            <input id="id_company_name" type="text" name="company_name" maxlength="255" /><br />
+
+            <p class="tip">{% trans "Tip: Add new member to this group."%}</p>
+
+        </div>
+
     </div>
     <div class="bot">
         <p class="error hide"></p>

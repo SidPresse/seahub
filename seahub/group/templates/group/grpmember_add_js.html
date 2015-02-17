@@ -18,21 +18,61 @@ $('#member-add-form').submit(function() {
     var form = $(this),
         cur_tab_id = $('.ui-tabs-selected a', form).attr('href'),
         post_data = '',
-        input = $('[name="user_name"]', form); 
+        input = $('[name="user_name"]', form);
+        new_member=false;
+
+        email = '';
+        pwd1 = '';
+        pwd2 = '';
+        contact_name = '';
+        company_name = '';
         switch(cur_tab_id) {
             case '#enter':
                 post_data = input.val();
                 break;
+
+            case '#add-user-form':
+
+                new_member=true;
+                email = $('#id_email_nm').val();
+                pwd1 = $('#id_password1').val();
+                pwd2 = $('#id_password2').val();
+                post_data=email;
+                input.val(post_data);
+                name = $('#id_name').val();
+                company_name = $('#id_company_name').val();
+
+
+                if (!email) {
+                    apply_form_error(form.attr('id'), "{% trans "Email cannot be blank" %}");
+                    return false;
+                }
+                if (!pwd1) {
+                    apply_form_error(form.attr('id'), "{% trans "Password cannot be blank" %}");
+                    return false;
+                }
+                if (!pwd2) {
+                    apply_form_error(form.attr('id'), "{% trans "Please enter the password again" %}");
+                    return false;
+                }
+                if (pwd1 != pwd2) {
+                    apply_form_error(form.attr('id'), "{% trans "Passwords do not match" %}");
+                    return false;
+                }
+
+                break;
+
             case '#contact-options':
                 $(cur_tab_id + ' .checkbox-checked .checkbox-orig').each(function() {
-                    post_data += $(this).val() + ','; 
-                });  
+                    post_data += $(this).val() + ',';
+                });
                 input.val(post_data);
-        }    
+        }
+        alert(post_data);
         if (!post_data) {
             apply_form_error(form.attr('id'), "{% trans "Please enter emails, or select some." %}");
             return false;
-        }    
+        }
 
     var submit_btn = $('[type="submit"]', form);
     disable(submit_btn);
@@ -43,7 +83,7 @@ $('#member-add-form').submit(function() {
         cache: false,
         beforeSend: prepareCSRFToken,
         data: {
-            'user_name': post_data
+            'user_name': post_data,'new_member': new_member,'email': email,'pwd': pwd1,'name': name,'company_name': company_name
         },
         success: function(data) {
             location.reload(true);

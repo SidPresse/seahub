@@ -47,7 +47,9 @@ from seahub.settings import SITE_ROOT, SITE_NAME
 from seahub.shortcuts import get_first_object_or_none
 from seahub.utils import render_error, render_permission_error, string2list, \
     gen_file_get_url, get_file_type_and_ext, \
-    calc_file_path_hash, is_valid_username, send_html_email, is_org_context
+    calc_file_path_hash, is_valid_username, send_html_email, is_org_context, \
+    IS_EMAIL_CONFIGURED, send_html_email, \
+    is_valid_username, is_ldap_user, is_user_password_strong
 from seahub.utils.file_types import IMAGE
 from seahub.utils.paginator import Paginator
 from seahub.views import is_registered_user
@@ -56,6 +58,14 @@ from seahub.views.modules import get_enabled_mods_by_group, MOD_GROUP_WIKI, \
     get_wiki_enabled_group_list
 
 from seahub.forms import SharedRepoCreateForm
+from seahub.base.accounts import User
+from seahub.profile.models import Profile, DetailedProfile
+from seahub.settings import INIT_PASSWD, SITE_NAME, \
+    SEND_EMAIL_ON_ADDING_SYSTEM_MEMBER, SEND_EMAIL_ON_RESETTING_USER_PASSWD, \
+    ENABLE_GUEST
+
+from seahub.profile.forms import  ProfileForm
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -222,6 +232,10 @@ def group_list(request):
             group.wiki_enabled = True
         else:
             group.wiki_enabled = False
+    # redirect user, is not staff
+    if not request.user.is_staff:
+        return HttpResponseRedirect('/')
+
 
     return render_to_response('group/groups.html', {
             'joined_groups': joined_groups,
@@ -671,6 +685,19 @@ def send_group_member_add_mail(request, group, from_user, to_user):
     subject = _(u'You are invited to join a group on %s') % SITE_NAME
     send_html_email(subject, 'group/add_member_email.html', c, None, [to_user])
 
+
+def send_user_add_mail(request, email, password):
+    """Send email when add new user."""
+    c = {
+        'user': request.user.username,
+        'org': request.user.org,
+        'email': email,
+        'password': password,
+        }
+    send_html_email(_(u'You are invited to join %s') % SITE_NAME,
+            'sysadmin/user_add_email.html', c, None, [email])
+
+
 @login_required_ajax
 @group_staff_required
 def ajax_add_group_member(request, group_id):
@@ -688,6 +715,8 @@ def ajax_add_group_member(request, group_id):
     username = request.user.username
 
     member_name_str = request.POST.get('user_name', '')
+
+
     member_list = string2list(member_name_str)
     member_list = [x.lower() for x in member_list]
 
@@ -759,22 +788,78 @@ def ajax_add_group_member(request, group_id):
         # Can only invite registered user to group if not in cloud mode.
         for email in member_list:
             if not is_valid_username(email):
-                err_msg = _(u'Failed to add, %s is not a correct email adress.')
+                err_msg = _(u'Failed to add, %s is not correct email adress.')
                 result['error'] = err_msg % email
                 return HttpResponse(json.dumps(result), status=400,
                                     content_type=content_type)
-
-
                 #continue
 
             if is_group_user(group.id, email):
                 continue
 
+
             if not is_registered_user(email):
-                err_msg = _(u'Failed to add, %s is not registerd.')
-                result['error'] = err_msg % email
-                return HttpResponse(json.dumps(result), status=400,
-                                    content_type=content_type)
+                if request.POST.get('new_member', ''):
+                    #add new member and add to this group
+                    email=request.POST.get('email', '')
+                    password=request.POST.get('pwd', '')
+
+                    name=request.POST.get('name', '')
+                    company_name=request.POST.get('company_name', '')
+
+                    #departement=request.POST.get('departement', '')
+                    #telephone=request.POST.get('telephone', '')
+
+                    #add user
+                    user = User.objects.create_user(email, password, is_staff=False,
+                                        is_active=True)
+
+                    #add profile
+                    Profile.objects.add_or_update(email, name, company_name)
+
+                    #add detailed profile(not use)
+                    #DetailedProfile.objects.add_detailed_profile(email,departement,telephone)
+
+
+                    #send mail
+                    if request.user.org:
+                        org_id = request.user.org.org_id
+                        url_prefix = request.user.org.url_prefix
+                        ccnet_threaded_rpc.add_org_user(org_id, email, 0)
+                        if IS_EMAIL_CONFIGURED:
+                            try:
+                                send_user_add_mail(request, email, password)
+                                messages.success(request, _(u'Successfully added user %s. An email notification has been sent.') % email)
+                            except Exception, e:
+                                logger.error(str(e))
+                                messages.success(request, _(u'Successfully added user %s. An error accurs when sending email notification, please check your email configuration.') % email)
+                        else:
+                            messages.success(request, _(u'Successfully added user %s.') % email)
+
+                        return HttpResponse(json.dumps({'success': True}), content_type=content_type)
+                    else:
+                        if IS_EMAIL_CONFIGURED:
+                            if SEND_EMAIL_ON_ADDING_SYSTEM_MEMBER:
+                                try:
+                                    send_user_add_mail(request, email, password)
+                                    messages.success(request, _(u'Successfully added user %s. An email notification has been sent.') % email)
+                                except Exception, e:
+                                    logger.error(str(e))
+                                    messages.success(request, _(u'Successfully added user %s. An error accurs when sending email notification, please check your email configuration.') % email)
+                            else:
+                                messages.success(request, _(u'Successfully added user %s.') % email)
+                        else:
+                            messages.success(request, _(u'Successfully added user %s. But email notification can not be sent, because Email service is not properly configured.') % email)
+
+                        return HttpResponse(json.dumps({'success': True}), content_type=content_type)
+
+                else:
+                    err_msg = _(u'Failed to add, %s is not registerd.')
+                    result['error'] = err_msg % email
+                    return HttpResponse(json.dumps(result), status=400,
+                                        content_type=content_type)
+
+
             # Add user to group.
             try:
                 ccnet_threaded_rpc.group_add_member(group.id,
