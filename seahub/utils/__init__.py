@@ -59,7 +59,7 @@ try:
     from seahub.settings import CHECK_SHARE_LINK_TRAFFIC
 except ImportError:
     CHECK_SHARE_LINK_TRAFFIC = False
-    
+
 def is_cluster_mode():
     cfg = ConfigParser.ConfigParser()
     conf = os.path.join(os.environ['SEAFILE_CONF_DIR'], 'seafile.conf')
@@ -887,11 +887,11 @@ if HAS_OFFICE_CONVERTER:
 
     def cluster_delegate(delegate_func):
         '''usage:
-        
+
         @cluster_delegate(funcA)
         def func(*args):
             ...non-cluster logic goes here...
-        
+
         - In non-cluster mode, this decorator effectively does nothing.
         - In cluster mode, if this node is not the office convert node,
         funcA is called instead of the decorated function itself
@@ -905,7 +905,7 @@ if HAS_OFFICE_CONVERTER:
                 else:
                     return func(*args)
             return real_func
-            
+
         return decorated
 
     def delegate_add_office_convert_task(file_id, doctype, raw_path):
@@ -917,31 +917,31 @@ if HAS_OFFICE_CONVERTER:
             'doctype': doctype,
             'raw_path': raw_path,
         })
-        
+
         ret = do_urlopen(url, data=data).read()
-        
+
         return json.loads(ret)
 
     def delegate_query_office_convert_status(file_id):
         url = urljoin(OFFICE_CONVERTOR_ROOT, '/office-convert/internal/status/')
         url += '?file_id=' + file_id
-        headers = { 
+        headers = {
             'X-Seafile-Office-Preview-Token': do_md5(file_id + seahub.settings.SECRET_KEY),
         }
         ret = do_urlopen(url, headers=headers).read()
-        
+
         return json.loads(ret)
 
     def delegate_query_office_file_pages(file_id):
         url = urljoin(OFFICE_CONVERTOR_ROOT, '/office-convert/internal/page-num/')
         url += '?file_id=' + file_id
-        
-        headers = { 
+
+        headers = {
             'X-Seafile-Office-Preview-Token': do_md5(file_id + seahub.settings.SECRET_KEY),
         }
 
         ret = do_urlopen(url, headers=headers).read()
-        
+
         return json.loads(ret)
 
     def delegate_get_office_converted_page(request, path, file_id):
@@ -973,7 +973,7 @@ if HAS_OFFICE_CONVERTER:
             resp['Last-Modified'] = ret.headers.get('last-modified')
 
         return resp
-        
+
     @cluster_delegate(delegate_add_office_convert_task)
     def add_office_convert_task(file_id, doctype, raw_path):
         rpc = _get_office_converter_rpc()
@@ -993,7 +993,7 @@ if HAS_OFFICE_CONVERTER:
             ret['success'] = True
             ret['status'] = d.status
         return ret
-            
+
     @cluster_delegate(delegate_query_office_file_pages)
     def query_office_file_pages(file_id):
         rpc = _get_office_converter_rpc()
@@ -1005,7 +1005,7 @@ if HAS_OFFICE_CONVERTER:
             ret['success'] = True
             ret['count'] = d.count
         return ret
-        
+
     @cluster_delegate(delegate_get_office_converted_page)
     def get_office_converted_page(request, path, file_id):
         return django_static_serve(request, path, document_root=OFFICE_HTML_DIR)
