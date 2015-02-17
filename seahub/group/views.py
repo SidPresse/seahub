@@ -820,6 +820,15 @@ def ajax_add_group_member(request, group_id):
                     #add detailed profile(not use)
                     #DetailedProfile.objects.add_detailed_profile(email,departement,telephone)
 
+                    #add to group
+                    try:
+                        ccnet_threaded_rpc.group_add_member(group.id,
+                                                    username, email)
+                    except SearpcError, e:
+                        result['error'] = _(e.msg)
+                        return HttpResponse(json.dumps(result), status=500,
+                                    content_type=content_type)
+
 
                     #send mail
                     if request.user.org:
