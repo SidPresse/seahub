@@ -18,7 +18,7 @@ from django.utils.translation import ugettext as _
 from seaserv import ccnet_threaded_rpc, seafserv_threaded_rpc, get_emailusers, \
     CALC_SHARE_USAGE, seafile_api
 from pysearpc import SearpcError
-
+from seahub.profile.models import Profile, DetailedProfile
 from seahub.base.accounts import User
 from seahub.base.models import UserLastLogin
 from seahub.base.decorators import sys_staff_required
@@ -37,11 +37,10 @@ from seahub.settings import INIT_PASSWD, SITE_NAME, \
 from seahub.utils import send_html_email, get_user_traffic_list, get_server_id
 from seahub.utils.sysinfo import get_platform_name
 try:
-    from seahub.settings import ENABLE_TRIAL_ACCOUNT
-except:
-    ENABLE_TRIAL_ACCOUNT = False
-if ENABLE_TRIAL_ACCOUNT:
     from seahub_extra.trialaccount.models import TrialAccount
+    enable_trial_account = True
+except:
+    enable_trial_account = False
 
 logger = logging.getLogger(__name__)
 
@@ -203,7 +202,7 @@ def sys_user_admin(request):
 
     users = users_plus_one[:per_page]
     last_logins = UserLastLogin.objects.filter(username__in=[x.email for x in users])
-    if ENABLE_TRIAL_ACCOUNT:
+    if enable_trial_account:
         trial_users = TrialAccount.objects.filter(user_or_org__in=[x.email for x in users])
     else:
         trial_users = []
@@ -548,13 +547,10 @@ def user_remove(request, user_id):
 @sys_staff_required
 def remove_trial(request, user_or_org):
     """Remove trial account.
-    
+
     Arguments:
     - `request`:
     """
-    if not ENABLE_TRIAL_ACCOUNT:
-        raise Http404
-
     referer = request.META.get('HTTP_REFERER', None)
     next = reverse('sys_useradmin') if referer is None else referer
 
@@ -779,9 +775,15 @@ def user_add(request):
     post_values = request.POST.copy()
     post_email = request.POST.get('email', '')
     post_role = request.POST.get('role', DEFAULT_USER)
+
+    post_name = request.POST.get('name', '')
+    post_company_name = request.POST.get('company_name', '')
+
     post_values.update({
                         'email': post_email.lower(),
                         'role': post_role,
+                        'name': post_name,
+                        'company_name': post_company_name,
                       })
 
     form = AddUserForm(post_values)
@@ -790,10 +792,20 @@ def user_add(request):
         role = form.cleaned_data['role']
         password = form.cleaned_data['password1']
 
+        #name = form.cleaned_data['name']
+        #company_name = form.cleaned_data['company_name']
+
         user = User.objects.create_user(email, password, is_staff=False,
                                         is_active=True)
         if user:
             User.objects.update_role(email, role)
+
+
+        #add profile
+        Profile.objects.add_or_update(email, post_name, post_company_name)
+
+        #add detailed profile(not use)
+        #DetailedProfile.objects.add_detailed_profile(email,departement,telephone)
 
         if request.user.org:
             org_id = request.user.org.org_id
@@ -878,7 +890,7 @@ def sys_org_admin(request):
                                                     per_page + 1)
     orgs = orgs_plus_one[:per_page]
 
-    if ENABLE_TRIAL_ACCOUNT:
+    if enable_trial_account:
         trial_orgs = TrialAccount.objects.filter(user_or_org__in=[x.org_id for x in orgs])
     else:
         trial_orgs = []
@@ -1104,7 +1116,7 @@ def user_search(request):
 
     users = ccnet_threaded_rpc.search_emailusers(email, -1, -1)
     last_logins = UserLastLogin.objects.filter(username__in=[x.email for x in users])
-    if ENABLE_TRIAL_ACCOUNT:
+    if enable_trial_account:
         trial_users = TrialAccount.objects.filter(user_or_org__in=[x.email for x in users])
     else:
         trial_users = []

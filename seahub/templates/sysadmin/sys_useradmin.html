@@ -27,7 +27,7 @@
     </ul>
     <div class="fright">
         <button id="upload-file-btn"><span class="icon-upload-alt"></span>{% trans "Import users" %}</button>
-        <button id="add-user-btn"><img src="{{ MEDIA_URL }}img/add.png" alt="" class="add vam" /><span class="vam">{% trans "Add user" %}</span></button>
+         <button id="add-user-btn"><img src="{{ MEDIA_URL }}img/add.png" alt="" class="add vam" /><span class="vam">{% trans "Add user" %}</span></button>
     </div>
 </div>
 
@@ -43,9 +43,15 @@
     </select><br />
     {% endif %}
     <label for="id_password1">{% trans "Password" %}</label><br />
-    <input type="password" name="password1" id="id_password1" class="input" /><br />    
+    <input type="password" name="password1" id="id_password1" class="input" /><br />
     <label for="id_password2">{% trans "Confirm Password" %}</label><br />
-    <input type="password" name="password2" id="id_password2" class="input" /><br />    
+    <input type="password" name="password2" id="id_password2" class="input" /><br />
+    <label for="id_name">{% trans "Name" %}</label><br />
+    <input type="text" name="name" id="id_name" class="input" /><br />
+    <label for="id_company_name">{% trans "Company name" %}</label><br />
+    <input type="text" name="company_name" id="id_company_name" class="input" /><br />
+
+
     <p class="error hide"></p>
     <button type="submit" class="submit">{% trans "Submit" %}</button>
 </form>
@@ -92,7 +98,9 @@ $('#add-user-form').submit(function() {
         role = $('select[name="role"]', form).val(),
         {% endif %}
         pwd1 = $.trim(form.children('[name="password1"]').val()),
-        pwd2 = $.trim(form.children('[name="password2"]').val());
+        pwd2 = $.trim(form.children('[name="password2"]').val()),
+        name = $.trim(form.children('[name="name"]').val()),
+        company_name = $.trim(form.children('[name="company_name"]').val());
 
     if (!email) {
         apply_form_error(form_id, "{% trans "Email cannot be blank" %}");
@@ -101,15 +109,15 @@ $('#add-user-form').submit(function() {
     if (!pwd1) {
         apply_form_error(form_id, "{% trans "Password cannot be blank" %}");
         return false;
-    } 
+    }
     if (!pwd2) {
         apply_form_error(form_id, "{% trans "Please enter the password again" %}");
         return false;
-    } 
+    }
     if (pwd1 != pwd2) {
         apply_form_error(form_id, "{% trans "Passwords do not match" %}");
         return false;
-    } 
+    }
 
     var submit_btn = $(this).find('[type="submit"]');
     disable(submit_btn);
@@ -125,13 +133,15 @@ $('#add-user-form').submit(function() {
             'role': role,
             {% endif %}
             'password1': pwd1,
-            'password2': pwd2
+            'password2': pwd2,
+            'name' : name,
+            'company_name' : company_name
         },
         success: function(data) {
             if (data['success']) {
                 location.reload(true);
-            }   
-        },  
+            }
+        },
         error: function(jqXHR, textStatus, errorThrown) {
             if (jqXHR.responseText) {
                 apply_form_error(form_id, $.parseJSON(jqXHR.responseText).error);
