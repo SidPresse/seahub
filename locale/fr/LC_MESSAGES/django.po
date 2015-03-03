@@ -11,6 +11,7 @@
 # schaeffer <jonathan.schaeffer@univ-brest.fr>, 2014
 # Gaspard <info@widelinkpc.be>, 2013
 # MathieuP, 2014
+# Nicolas Delvaux <contact@nicolas-delvaux.org>, 2015
 # Pierrick B. <pierrick.brun@gmail.com>, 2013
 # Pierrick B. <pierrick.brun@gmail.com>, 2013-2014
 # schaeffer <jonathan.schaeffer@univ-brest.fr>, 2014
@@ -19,7 +20,7 @@ msgstr ""
 "Project-Id-Version: seahub\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-26 17:20+0800\n"
-"PO-Revision-Date: 2015-01-08 08:39+0000\n"
+"PO-Revision-Date: 2015-01-21 06:28+0000\n"
 "Last-Translator: jcbeylot78\n"
 "Language-Team: French (http://www.transifex.com/projects/p/seahub/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -34,11 +35,11 @@ msgstr "Un utilisateur existe déjà avec ce mail."
 
 #: seahub/forms.py:40
 msgid "The two passwords didn't match."
-msgstr "Les deux mots de passe ne correspondent pas"
+msgstr "Les deux mots de passe ne correspondent pas."
 
 #: seahub/forms.py:49 seahub/group/forms.py:56 seahub/wiki/forms.py:16
 msgid "Name can't be empty"
-msgstr "Le nom ne peut être vide"
+msgstr "Le nom ne doit pas être vide"
 
 #: seahub/forms.py:50 seahub/group/forms.py:57 seahub/wiki/forms.py:17
 msgid "Name is too long (maximum is 255 characters)"
@@ -46,7 +47,7 @@ msgstr "Le nom est trop long (le maximum est de 255 caractères)"
 
 #: seahub/forms.py:53 seahub/group/forms.py:60 seahub/wiki/forms.py:20
 msgid "Description can't be empty"
-msgstr "La description ne peut être vide"
+msgstr "La description ne doit pas être vide"
 
 #: seahub/forms.py:54 seahub/group/forms.py:61 seahub/wiki/forms.py:21
 msgid "Description is too long (maximum is 100 characters)"
@@ -73,16 +74,16 @@ msgstr "L'ancien nom est requis"
 
 #: seahub/forms.py:95 seahub/forms.py:116
 msgid "It's too long."
-msgstr "C'est trop long."
+msgstr "Trop long."
 
 #: seahub/forms.py:96 seahub/forms.py:117
 msgid "It's required."
-msgstr "C'est requis."
+msgstr "Requis."
 
 #: seahub/forms.py:103 seahub/forms.py:124
 #, python-format
 msgid "Name \"%s\" is not valid"
-msgstr "Le nom \"%s\" n'est pas valide"
+msgstr "Le nom « %s » n'est pas valide"
 
 #: seahub/forms.py:135
 msgid "Repo id is required"
@@ -98,7 +99,7 @@ msgstr "Le mot de passe ne peut pas être vide"
 
 #: seahub/forms.py:148
 msgid "Bad url format"
-msgstr "Mauvais format de l'url"
+msgstr "Mauvais format d'URL"
 
 #: seahub/forms.py:153 seahub/templates/repo.html:646
 msgid "Wrong password"
@@ -1972,7 +1973,7 @@ msgstr "Supprimer des membres"
 #: seahub/group/templates/group/group_manage.html:147
 #, python-format
 msgid "Really want to delete %s ?"
-msgstr "Êtes vous sûr de vouloir effacer %s ?"
+msgstr "Êtes vous sûr de vouloir supprimer %s ?"
 
 #: seahub/group/templates/group/group_members.html:10
 msgid "Quit"
@@ -2185,13 +2186,13 @@ msgstr "Vous n'êtes dans aucun groupe"
 msgid ""
 "Group is a place for you and your friends leaving messages and collaborating"
 " on libraries. You can create a group by clicking \"New Group\" button."
-msgstr "Un groupe est un espace où vous et vos partenaires pouvez échanger et collaborer sur des bibliothèques. Vous pouvez créer un groupe en cliquant sur le bouton \"Nouveau groupe\"."
+msgstr "Un groupe est un espace où vous et vos partenaires pouvez échanger et collaborer dans des bibliothèques. Vous pouvez créer un groupe en cliquant sur le bouton \"Nouveau groupe\"."
 
 #: seahub/group/templates/group/groups_right_panel.html:34
 msgid ""
 "Group is a place for you and your friends leaving messages and collaborating"
 " on libraries. Groups you join will be listed here."
-msgstr "Un groupe est un espace où vous et vos partenaires pour déposer des messages et collaborer sur les bibliothèques. Les groupes que vous avez rejoint sont listés ici."
+msgstr "Un groupe est un espace où vous et vos partenaires peuvent déposer des messages et collaborer dans des bibliothèques. Les groupes que vous avez rejoints sont listés ici."
 
 #: seahub/group/templates/group/groups_right_panel.html:41
 msgid "Group Name"
@@ -2252,7 +2253,7 @@ msgstr "Supprimer une bibliothèque"
 
 #: seahub/help/templates/help/help_base.html:11
 msgid "Encrypting a library"
-msgstr "Crypter une bibliothèque"
+msgstr "Chiffrer une bibliothèque"
 
 #: seahub/help/templates/help/help_base.html:12
 #: seahub/help/templates/help/help_colab.html:7
@@ -2311,7 +2312,7 @@ msgstr "Quand une bibliothèque de fichiers est supprimée sur le site web, la b
 msgid ""
 "After a file library is deleted on your computer, the library on the website"
 " won't be deleted. You may download and sync it again later."
-msgstr "Quand une bibliothèque de fichier est supprimée sur l'ordinateur, la bibliothèque sur le site web n'est pas supprimée. Vous la devrez télécharger et la synchroniser à nouveau."
+msgstr "Quand une bibliothèque de fichier est supprimée sur votre ordinateur, la bibliothèque sur le site web n'est pas supprimée. Vous la devrez télécharger et la synchroniser à nouveau."
 
 #: seahub/help/templates/help/help_group_share.html:7
 msgid "Sharing a library to a group"
@@ -2443,7 +2444,7 @@ msgstr "Cliquer sur le bouton \"Synchroniser cette bibliothèque\" pour synchron
 msgid ""
 "Then you add some files into the library. They will be automatically synced "
 "with cloud platform."
-msgstr "Quand vous ajoutez des fichiers dans la bibliothèque. Ils seront automatiquement synchronisés dans le cloud."
+msgstr "Ensuite vous ajoutez des fichiers dans la bibliothèque. Ils seront automatiquement synchronisés dans le cloud."
 
 #: seahub/help/templates/help/help_install_v2.html:32
 msgid "4. (Optional) Create a library"
@@ -2455,14 +2456,14 @@ msgstr "Vous pouvez aussi créer une bibliothèque depuis un dossier local."
 
 #: seahub/help/templates/help/help_security.html:7
 msgid "Encrypting a file library"
-msgstr "Crypter une bibliothèque de fichier"
+msgstr "Chiffrer une bibliothèque de fichiers"
 
 #: seahub/help/templates/help/help_security.html:8
 msgid ""
 "Seafile supports encryption of file libraries to strengthen your data "
 "security. To encrypt a file library, you need to set a password when you "
 "create a library."
-msgstr "Seafile supporte le chiffrage de bibliothèques de fichiers pour renforcer la sécurité de vos informations. Pour chiffrer une bibliothèque de fichiers, vous devez mettre un mot de passe quand vous créez une bibliothèque."
+msgstr "Seafile supporte le chiffrement de bibliothèques de fichiers pour renforcer la sécurité de vos informations. Pour chiffrer une bibliothèque de fichiers, vous devez mettre un mot de passe quand vous créez une bibliothèque."
 
 #: seahub/help/templates/help/help_security.html:10
 msgid "The password won't be stored on Seafile cloud platform."
@@ -2493,7 +2494,7 @@ msgstr "Il ne pourra plus être changé à partir de là"
 msgid ""
 "To share an encrypted library with your friends, you also need to tell them "
 "the password."
-msgstr "Pour partager une bibliothèque avec vos contacts, vous devez aussi leur donner le mot de passe."
+msgstr "Pour partager une bibliothèque chiffrée avec vos contacts, vous devez aussi leur fournir le mot de passe."
 
 #: seahub/help/templates/help/help_view_encrypted.html:10
 msgid ""
@@ -2502,7 +2503,7 @@ msgid ""
 "library. Your password is only stored in the server's encrypted memory. It "
 "would be cleared from the memory in an hour. After that, if you want to view"
 " the library, you'll have to enter password again."
-msgstr "Les serveurs Seafile ne stockent pas le mot de passe d'une bibliothèque chiffrée. \n\nPour voir une bibliothèque chiffrée en ligne, vous devez fournir le mot de passe. Votre mot de passe est seulement stocké dans la mémoire chiffrée du serveur. \n\nLe mot de passe sera supprimé de la mémoire dans une heure. Après cela, si vous voulez voir la bibliothèque, vous devrez entrer le mot de passe à nouveau."
+msgstr "Les serveurs Seafile ne stockent pas le mot de passe d'une bibliothèque chiffrée. \n\nPour voir une bibliothèque chiffrée en ligne, vous devez fournir le mot de passe. Votre mot de passe est seulement stocké dans la mémoire chiffrée du serveur. \n\nLe mot de passe sera supprimé de la mémoire une heure plus tard. Après cela, si vous voulez voir la bibliothèque, vous devrez entrer le mot de passe à nouveau."
 
 #: seahub/message/views.py:184
 #: seahub/message/templates/message/all_msg_list.html:156
@@ -2807,7 +2808,7 @@ msgstr "Impossible de définir comme bibliothèque par défaut."
 
 #: seahub/profile/views.py:197
 msgid "Can not set encrypted library as default library."
-msgstr "Impossible de  définir une bibliothèque cryptée comme bibliothèque par défaut."
+msgstr "Impossible de définir une bibliothèque chiffrée comme bibliothèque par défaut."
 
 #: seahub/profile/views.py:202
 #, python-format
@@ -2882,11 +2883,11 @@ msgstr "Langue"
 
 #: seahub/profile/templates/profile/set_profile.html:81
 msgid "Encrypted Libraries Setting"
-msgstr "Paramètres de la bibliothèque chiffrée"
+msgstr "Paramètres des bibliothèques chiffrées"
 
 #: seahub/profile/templates/profile/set_profile.html:83
 msgid "How to view encrypted libraries online:"
-msgstr "Comment voir les bibliothèques chiffrée en ligne : "
+msgstr "Comment voir les bibliothèques chiffrée en ligne : "
 
 #: seahub/profile/templates/profile/set_profile.html:96
 msgid "Sub-library Setting"
@@ -3410,7 +3411,7 @@ msgstr "Mot de passe : "
 msgid ""
 "You can change how to view encrypted libraries online <a class=\"normal\" "
 "href=\"%(profile_edit_url)s#enc-lib-setting\">here</a>."
-msgstr "Vous pouvez changer comment voir les bibliothèques en ligne <a class=\"normal\" href=\"%(profile_edit_url)s#enc-lib-setting\">ici</a>."
+msgstr "Vous pouvez changer comment voir les bibliothèques chiffrées en ligne <a class=\"normal\" href=\"%(profile_edit_url)s#enc-lib-setting\">en cliquant sur ce lien</a>."
 
 #: seahub/templates/decrypt_repo_form.html:33 seahub/templates/repo.html:622
 #: seahub/templates/share_access_validation.html:25
@@ -3910,7 +3911,7 @@ msgstr "Wiki personnel"
 
 #: seahub/templates/home_base.html:29
 msgid "Share Admin"
-msgstr "Mes Partages"
+msgstr "Mes partages"
 
 #: seahub/templates/home_base.html:36 seahub/templates/sysadmin/base.html:26
 msgid "Links"
@@ -4162,7 +4163,7 @@ msgstr "Nom de fichier"
 
 #: seahub/templates/repo.html:160
 msgid "Current Library"
-msgstr "Bibliothèque en cours"
+msgstr "Bibliothèque courante"
 
 #: seahub/templates/repo.html:164
 msgid "Other Libraries"
@@ -4384,16 +4385,16 @@ msgstr "Annulé."
 
 #: seahub/templates/repo.html:1109
 msgid "Encrypting the file..."
-msgstr "Cryptage du fichier..."
+msgstr "Chiffrement du fichier..."
 
 #: seahub/templates/repo.html:1131
 msgid "Error when encrypting."
-msgstr "Erreur lors du cryptage."
+msgstr "Erreur lors du chiffrement."
 
 #: seahub/templates/repo.html:1138
 #, python-format
 msgid "Encrypting, %(num)s%% complete."
-msgstr "Chiffrage de %(num)s%% terminé."
+msgstr "Chiffrement, %(num)s%% terminé."
 
 #: seahub/templates/repo.html:1155
 msgid "Uploading ..."
@@ -4414,12 +4415,12 @@ msgstr "Téléchargement de %(num)s%% terminé."
 
 #: seahub/templates/repo.html:1518
 msgid "Decrypting..."
-msgstr "Décryptage ..."
+msgstr "Déchiffrement..."
 
 #: seahub/templates/repo.html:1535
 #, python-format
 msgid "Decrypting, %(num)s%% complete."
-msgstr "Déchiffrage de %(num)s%% terminé."
+msgstr "Déchiffrement, %(num)s%% terminé."
 
 #: seahub/templates/repo.html:1638
 #, python-format
@@ -4953,7 +4954,7 @@ msgstr "chargement ..."
 msgid ""
 "You can use IE 10 or other browsers, for example, firefox, to view it "
 "online."
-msgstr "Pour la consultation en ligne, vous pouvez utiliser Internet Explorer 10 ou d\\'autres navigateurs, comme Firefox."
+msgstr "Pour la consultation en ligne, vous pouvez utiliser Internet Explorer 10 ou d'autres navigateurs, comme Firefox."
 
 #: seahub/templates/view_file_svg.html:7
 #: seahub/templates/snippets/file_content_js.html:63
@@ -5040,7 +5041,7 @@ msgstr "Impossible de rafraichir le CAPTCHA, veuillez essayer ultérieurement."
 #: seahub/templates/sysadmin/repoadmin_js.html:21
 #: seahub/templates/sysadmin/sys_useradmin.html:98
 msgid "Email cannot be blank"
-msgstr "L\\'adresse mail ne peut pas être vide"
+msgstr "L'adresse mail ne peut pas être vide"
 
 #: seahub/templates/registration/login.html:98
 #: seahub/templates/registration/password_change_form.html:61
@@ -5602,7 +5603,7 @@ msgstr "Partage"
 
 #: seahub/templates/snippets/space_and_traffic.html:25
 msgid "Traffic this month:"
-msgstr "Bande passante de ce mois."
+msgstr "Bande passante de ce mois:"
 
 #: seahub/templates/snippets/space_and_traffic.html:29
 msgid "Payment"
@@ -5902,7 +5903,7 @@ msgstr "Trafic de l'utilisateur"
 
 #: seahub/templates/sysadmin/sys_trafficadmin.html:22
 msgid "Month:"
-msgstr "Mois :"
+msgstr "Mois:"
 
 #: seahub/templates/sysadmin/sys_trafficadmin.html:28
 msgid "User"
@@ -6095,7 +6096,7 @@ msgstr "Autorisation refusée"
 
 #: seahub/thumbnail/views.py:44
 msgid "Image thumbnail is not supported in encrypted libraries."
-msgstr "Les vignettes ne sont pas supportées dans les bibliothèques cryptées"
+msgstr "Les miniatures d'images ne sont pas supportées dans les bibliothèques chiffrées."
 
 #: seahub/thumbnail/views.py:49
 msgid "Thumbnail function is not enabled."
@@ -6203,7 +6204,7 @@ msgstr "Erreur inconnue"
 #: seahub/views/__init__.py:942 seahub/views/__init__.py:943
 #: seahub/views/__init__.py:948 seahub/views/__init__.py:949
 msgid "My Library"
-msgstr "Ma Bibliothèque"
+msgstr "Ma bibliothèque"
 
 #: seahub/views/__init__.py:1110
 msgid "Failed to unshare the library, as it does not exist."
